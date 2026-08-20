@@ -2,35 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f3f3f3; margin: 0; }
-        .navbar { background-color: #131921; color: white; padding: 15px 25px; }
-        .navbar h1 { margin: 0; font-size: 28px; }
-        .container { padding: 50px; text-align: center; }
-        .product-box { background: white; display: inline-block; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .product-box img { width: 250px; border-radius: 8px; }
-        .price { font-size: 24px; color: #b12704; font-weight: 500; margin: 15px 0; }
-        .back-link { display: inline-block; margin-top: 20px; color: #131921; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="navbar" style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>My Shopping Store</h1>
-    <a href="/cart" style="color: white; text-decoration: none; font-size: 18px;">🛒 Cart</a>
-</div>
-    <div class="container">
-        <div class="product-box">
-            <img src="{{ product.image }}" alt="{{ product.name }}">
-            <h2>{{ product.name }}</h2>
-            <p class="price">${{ product.price }}</p>
-<form action="/cart/add/{{ product.id }}" method="POST">
-    <button type="submit" style="padding: 10px 20px; background: #f0c14b; border: 1px solid #a88734; border-radius: 5px; cursor: pointer; font-size: 16px;">Add to Cart</button>
-</form>
-        </div>
-        <br>
-        <a href="/" class="back-link">&larr; Back to store</a>
+    <div class="navbar">
+        <h1><span class="logo-dot"></span>My Shopping Store</h1>
+        <a href="/cart" class="cart-link">Cart</a>
     </div>
+
+    <div class="detail-wrap">
+        <div class="detail-image">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+        </div>
+        <div class="detail-info">
+            <div class="eyebrow" style="color: var(--primary); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">In stock</div>
+            <h2>{{ product.name }}</h2>
+            <span class="price">${{ product.price }}</span>
+            <div>
+                <form action="/cart/add/{{ product.id }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn">Add to cart</button>
+                </form>
+            </div>
+            <a href="/" class="back-link">&larr; Back to store</a>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2026 My Shopping Store</div>
 </body>
 </html>
