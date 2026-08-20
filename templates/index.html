@@ -100,13 +100,15 @@
     <div class="container">
         <div class="title">Welcome to Our Shop!</div>
         <div class="products">
-            {% for product in products %}
-            <div class="product-card">
-                <img src="{{ product.image }}" alt="{{ product.name }}">
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.price }}</p>
-            </div>
-            {% endfor %}
+{% for product in products %}
+<a href="/product/{{ product.id }}" style="text-decoration: none; color: inherit;">
+<div class="product-card">
+    <img src="{{ product.image }}" alt="{{ product.name }}">
+    <h3>{{ product.name }}</h3>
+    <p>${{ product.price }}</p>
+</div>
+</a>
+{% endfor %}
         </div>
     </div>
 
