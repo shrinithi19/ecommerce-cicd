@@ -1,8 +1,9 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, request, redirect, url_for, session
 import sqlite3
 import os
 
 app = Flask(__name__)
+app.secret_key = 'dev-secret-key-change-this'  # needed for sessions
 DATABASE = os.path.join(os.path.dirname(__file__), 'store.db')
 
 def get_db():
@@ -28,7 +29,6 @@ def init_db():
             image TEXT NOT NULL
         )
     ''')
-    # Seed only if table is empty
     existing = db.execute('SELECT COUNT(*) FROM products').fetchone()[0]
     if existing == 0:
         db.executemany(
@@ -53,6 +53,56 @@ def product_detail(product_id):
     db = get_db()
     product = db.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
     return render_template("product.html", product=product)
+
+@app.route('/cart/add/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+    cart = session.get('cart', {})
+    product_id = str(product_id)
+    cart[product_id] = cart.get(product_id, 0) + 1
+    session['cart'] = cart
+    return redirect(request.referrer or url_for('home'))
+
+@app.route('/cart/remove/<int:product_id>', methods=['POST'])
+def remove_from_cart(product_id):
+    cart = session.get('cart', {})
+    product_id = str(product_id)
+    if product_id in cart:
+        del cart[product_id]
+    session['cart'] = cart
+    return redirect(url_for('view_cart'))
+
+@app.route('/cart/update/<int:product_id>', methods=['POST'])
+def update_cart(product_id):
+    cart = session.get('cart', {})
+    product_id = str(product_id)
+    quantity = int(request.form.get('quantity', 1))
+    if quantity <= 0:
+        cart.pop(product_id, None)
+    else:
+        cart[product_id] = quantity
+    session['cart'] = cart
+    return redirect(url_for('view_cart'))
+
+@app.route('/cart')
+def view_cart():
+    cart = session.get('cart', {})
+    db = get_db()
+    items = []
+    total = 0
+    for product_id, quantity in cart.items():
+        product = db.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
+        if product:
+            subtotal = product['price'] * quantity
+            total += subtotal
+            items.append({
+                'id': product['id'],
+                'name': product['name'],
+                'price': product['price'],
+                'image': product['image'],
+                'quantity': quantity,
+                'subtotal': subtotal
+            })
+    return render_template("cart.html", items=items, total=total)
 
 if __name__ == '__main__':
     init_db()
