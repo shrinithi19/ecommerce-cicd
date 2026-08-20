@@ -27,10 +27,11 @@
         {% for product in products %}
         <a href="/product/{{ product.id }}" class="product-card">
             <div class="thumb">
-                <img src="{{ product.image }}" alt="{{ product.name }}">
+                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
             </div>
+            <div class="stars">★★★★<span>★</span></div>
             <h3>{{ product.name }}</h3>
-            <span class="price">${{ product.price }}</span>
+            <span class="price">${{ "%.2f"|format(product.price) }}</span>
         </a>
         {% endfor %}
     </div>
