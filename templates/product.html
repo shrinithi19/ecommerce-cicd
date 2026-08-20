@@ -14,12 +14,12 @@
 
     <div class="detail-wrap">
         <div class="detail-image">
-            <img src="{{ product.image }}" alt="{{ product.name }}">
+            <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
         </div>
         <div class="detail-info">
-            <div class="eyebrow" style="color: var(--primary); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">In stock</div>
+            <div class="stars">★★★★<span>★</span></div>
             <h2>{{ product.name }}</h2>
-            <span class="price">${{ product.price }}</span>
+            <span class="price">${{ "%.2f"|format(product.price) }}</span>
             <div>
                 <form action="/cart/add/{{ product.id }}" method="POST" style="display:inline;">
                     <button type="submit" class="btn">Add to cart</button>
