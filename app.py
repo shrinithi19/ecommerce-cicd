@@ -3,12 +3,13 @@ import sqlite3
 import os
 
 app = Flask(__name__)
-app.secret_key = 'dev-secret-key-change-this'  # needed for sessions
+app.secret_key = 'dev-secret-key-change-this'
+DATABASE = os.path.join(os.path.dirname(__file__), 'store.db')
+
 @app.context_processor
 def inject_cart_count():
     cart = session.get('cart', {})
     return dict(cart_count=sum(cart.values()))
-DATABASE = os.path.join(os.path.dirname(__file__), 'store.db')
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -38,9 +39,12 @@ def init_db():
         db.executemany(
             'INSERT INTO products (name, price, image) VALUES (?, ?, ?)',
             [
-                ("i phone", 49.99, "https://via.placeholder.com/150"),
-                ("Smart Watch", 79.99, "https://via.placeholder.com/150"),
-                ("Gaming Mouse", 29.99, "https://via.placeholder.com/150"),
+                ("Aria Smartphone", 599.00, "icons/phone.svg"),
+                ("Pulse Smart Watch", 179.00, "icons/watch.svg"),
+                ("Vortex Gaming Mouse", 39.99, "icons/mouse.svg"),
+                ("Echo Wireless Earbuds", 89.00, "icons/earbuds.svg"),
+                ("Flux Power Bank 10000mAh", 34.99, "icons/powerbank.svg"),
+                ("Glide Aluminum Laptop Stand", 44.00, "icons/laptop-stand.svg"),
             ]
         )
         db.commit()
