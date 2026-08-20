@@ -11,6 +11,8 @@ COPY app.py .
 # COPY the templates folder as well
 COPY templates/ ./templates/
 
+COPY static/ ./static/
+
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
