@@ -4,6 +4,10 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'dev-secret-key-change-this'  # needed for sessions
+@app.context_processor
+def inject_cart_count():
+    cart = session.get('cart', {})
+    return dict(cart_count=sum(cart.values()))
 DATABASE = os.path.join(os.path.dirname(__file__), 'store.db')
 
 def get_db():
