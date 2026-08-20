@@ -3,119 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Home</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f3f3f3;
-            margin: 0;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: #131921;
-            color: white;
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        /* Container */
-        .container {
-            padding: 50px;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 36px;
-            color: #0f1111;
-            margin-bottom: 20px;
-        }
-
-        /* Products Grid */
-        .products {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .product-card {
-            background-color: white;
-            width: 220px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-card img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .product-card h3 {
-            font-size: 20px;
-            margin: 10px 0;
-        }
-
-        .product-card p {
-            font-size: 18px;
-            color: #b12704;
-            font-weight: 500;
-        }
-
-        .footer {
-            margin-top: 60px;
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-            padding: 20px 0;
-            background-color: #eaeaea;
-        }
-    </style>
+    <title>My Shopping Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-    <div class="navbar" style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>My Shopping Store</h1>
-    <a href="/cart" style="color: white; text-decoration: none; font-size: 18px;">🛒 Cart</a>
+    <div class="navbar">
+        <h1><span class="logo-dot"></span>My Shopping Store</h1>
+        <a href="/cart" class="cart-link">
+            Cart
+            {% if cart_count and cart_count > 0 %}
+            <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
     </div>
 
-    <div class="container">
-        <div class="title">Welcome to Our Shop!</div>
-        <div class="products">
-{% for product in products %}
-<a href="/product/{{ product.id }}" style="text-decoration: none; color: inherit;">
-<div class="product-card">
-    <img src="{{ product.image }}" alt="{{ product.name }}">
-    <h3>{{ product.name }}</h3>
-    <p>${{ product.price }}</p>
-</div>
-</a>
-{% endfor %}
-        </div>
+    <div class="hero">
+        <div class="eyebrow">New drops</div>
+        <h2>Gear worth unboxing.</h2>
+        <p>A small, curated shelf of things worth adding to your cart.</p>
     </div>
 
-    <div class="footer">
-        © 2025 My Shopping Store — Inspired by Amazon
+    <div class="products">
+        {% for product in products %}
+        <a href="/product/{{ product.id }}" class="product-card">
+            <div class="thumb">
+                <img src="{{ product.image }}" alt="{{ product.name }}">
+            </div>
+            <h3>{{ product.name }}</h3>
+            <span class="price">${{ product.price }}</span>
+        </a>
+        {% endfor %}
     </div>
 
+    <div class="footer">&copy; 2026 My Shopping Store</div>
 </body>
 </html>
