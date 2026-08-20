@@ -17,10 +17,10 @@
         {% if items %}
             {% for item in items %}
             <div class="cart-item">
-                <div class="thumb"><img src="{{ item.image }}" alt="{{ item.name }}"></div>
+                <div class="thumb"><img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}"></div>
                 <div class="item-info">
                     <h3>{{ item.name }}</h3>
-                    <span class="price">${{ item.price }}</span>
+                    <span class="price">${{ "%.2f"|format(item.price) }}</span>
                 </div>
                 <form class="stepper" action="/cart/update/{{ item.id }}" method="POST">
                     <input type="number" name="quantity" value="{{ item.quantity }}" min="0">
