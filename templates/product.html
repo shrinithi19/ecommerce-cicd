@@ -22,6 +22,9 @@
             <img src="{{ product.image }}" alt="{{ product.name }}">
             <h2>{{ product.name }}</h2>
             <p class="price">${{ product.price }}</p>
+<form action="/cart/add/{{ product.id }}" method="POST">
+    <button type="submit" style="padding: 10px 20px; background: #f0c14b; border: 1px solid #a88734; border-radius: 5px; cursor: pointer; font-size: 16px;">Add to Cart</button>
+</form>
         </div>
         <br>
         <a href="/" class="back-link">&larr; Back to store</a>
